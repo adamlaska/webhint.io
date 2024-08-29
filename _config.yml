@@ -19,7 +19,7 @@ permalink_defaults:
 
 # Directory
 source_dir: src/content-replaced
-public_dir: dist
+public_dir: docs
 tag_dir: tags
 archive_dir: archives
 category_dir: categories
@@ -38,8 +38,10 @@ render_drafts: false
 post_asset_folder: false
 relative_link: false
 future: true
+
+syntax_highlighter:
 highlight:
-  enable: false
+# emtpy to disable hightlight
 
 # Category & Tag
 default_category: uncategorized

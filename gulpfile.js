@@ -9,8 +9,8 @@ const Hexo = require('hexo');
 
 const imageExtensions = 'gif,ico,jpg,png,svg';
 const dirs = {
-    dist: 'dist',
-    distCompreseable: 'dist/**/*.{css,html,ico,js,svg,txt,xml,webmanifest}',
+    dist: 'docs',
+    distCompreseable: 'docs/**/*.{css,html,ico,js,svg,txt,xml,webmanifest}',
     hint: 'node_modules/@hint',
     originalContent: `src/content`,
     src: 'src/webhint-theme',
@@ -76,7 +76,7 @@ gulp.task('build:hexo', (done) => {
             return hexo.call('clean');
         })
         .then(() => {
-            hexo.extend.filter.unregister('after_render:html', require('hexo/lib/plugins/filter/after_render/meta_generator'));
+            hexo.extend.filter.unregister('after_render:html', require('hexo/dist/plugins/filter/after_render/meta_generator'));
 
             return hexo.call('generate');
         })
@@ -88,7 +88,7 @@ gulp.task('watch:hexo', (done) => {
 
     hexo.init()
         .then(() => {
-            hexo.extend.filter.unregister('after_render:html', require('hexo/lib/plugins/filter/after_render/meta_generator'));
+            hexo.extend.filter.unregister('after_render:html', require('hexo/dist/plugins/filter/after_render/meta_generator'));
 
             return hexo.call('generate', { watch: true });
         })
@@ -254,17 +254,6 @@ gulp.task('move:images', moveImages);
 gulp.task('move:scanimages', moveScanImages);
 gulp.task('optimize:images', gulp.series('move:docimage', 'imagemin', 'move:images', 'move:scanimages'));
 
-gulp.task('404', (done) => {
-    const lostContent = fs.readFileSync(`${dirs.dist}/404/index.html`, 'utf-8'); // eslint-disable-line no-sync
-    const asp404 = `<%@ EnableSessionState=False %>
-<% Response.Status = "404" %>
-${lostContent}`;
-
-    fs.writeFileSync(`${dirs.dist}/404/index.asp`, asp404, 'utf-8'); // eslint-disable-line no-sync
-
-    done();
-});
-
 // ---------------------------------------------------------------------
 // | Main tasks                                                        |
 // ---------------------------------------------------------------------
@@ -356,9 +345,9 @@ gulp.task('build', gulp.series(
     'build:hexo',
     'copy:robots.txt',
     // 'generate-service-worker',
-    'compress:zopfli',
-    'compress:brotli',
-    '404'
+    // TODO: Re-enable pre-compression once supported by GitHub Pages
+    //'compress:zopfli',
+    //'compress:brotli',
 ));
 
 gulp.task('default', gulp.series('build'));
