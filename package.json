@@ -7,7 +7,7 @@
     "applicationinsights": "^2.6.0",
     "body-parser": "^1.20.2",
     "ejs": "^3.1.10",
-    "express": "^4.19.2",
+    "express": "^4.22.0",
     "globby": "^11.0.0",
     "highlight.js": "^11.10.0",
     "hint": "^7.1.13",
